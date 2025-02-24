@@ -30,7 +30,7 @@ public class UserService {
 	public Iterable<User> getUserAll (){
 		return userRepository.findAll();
 	}
-	// nueva prueba guay
+
 	public boolean checkCredentials(String username, String password) {
 	    Optional<User> user = userRepository.findByUsername(username);
 	    return user.isPresent() && user.get().getPassword().equals(password);
