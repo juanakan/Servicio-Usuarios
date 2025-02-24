@@ -31,6 +31,7 @@ public class UserService {
 		return userRepository.findAll();
 	}
 	
+	// pruebajuan
 	public boolean checkCredentials(String username, String password) {
 	    Optional<User> user = userRepository.findByUsername(username);
 	    return user.isPresent() && user.get().getPassword().equals(password);
