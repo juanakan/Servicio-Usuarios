@@ -16,5 +16,7 @@ public interface UserService {
 	public boolean checkCredentials(String username, String password);
 	
 	public void deleteUser (Long id);
+	
+	public User updateUser(Long id, User user);
 
 }
