@@ -50,12 +50,12 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public User updateUser(Long id, User userDetails) {
+	public User updateUser(Long id, User updatedUser) {
 	    return userRepository.findById(id)
 	        .map(user -> {
-	            user.setUsername(userDetails.getUsername());
-	            user.setPassword(userDetails.getPassword());
-	            user.setEmail(userDetails.getEmail());
+	            user.setUsername(updatedUser.getUsername());
+	            user.setPassword(updatedUser.getPassword());
+	            user.setEmail(updatedUser.getEmail());
 	            return userRepository.save(user);
 	        })
 	        .orElseThrow(() -> new IllegalArgumentException("Usuario no encontrado"));

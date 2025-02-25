@@ -27,8 +27,8 @@ public class UserController {
 	@PostMapping("/register")
 	public ResponseEntity<?> registerUser(@RequestBody User user) {
 		 try {
-		        User savedUser = userService.registerUser(user);
-		        UserDto userDTO = new UserDto(savedUser.getId(), savedUser.getUsername(), savedUser.getEmail());
+		        User nuevoUser = userService.registerUser(user);
+		        UserDto userDTO = new UserDto(nuevoUser.getId(), nuevoUser.getUsername(), nuevoUser.getEmail());
 		        return ResponseEntity.ok(userDTO);
 		    } catch (IllegalArgumentException e) {
 		        return ResponseEntity.badRequest().body(e.getMessage());
@@ -63,9 +63,9 @@ public class UserController {
     }
     
     @PutMapping("/{id}")
-    public ResponseEntity<?> updateUser(@PathVariable Long id, @RequestBody User userDetails) {
+    public ResponseEntity<?> updateUser(@PathVariable Long id, @RequestBody User user) {
         try {
-            User updatedUser = userService.updateUser(id, userDetails);
+            User updatedUser = userService.updateUser(id, user);
             UserDto userDTO = new UserDto(updatedUser.getId(), updatedUser.getUsername(), updatedUser.getEmail());
             return ResponseEntity.ok(userDTO);
         } catch (IllegalArgumentException e) {
