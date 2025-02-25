@@ -16,8 +16,12 @@ import com.users.dto.UserDto;
 import com.users.model.User;
 import com.users.service.UserService;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
+
 @RestController
 @RequestMapping("/api/users")
+@Tag(name = "Usuarios", description = "API para gestionar usuarios")
 public class UserController {
 	
 	@Autowired
@@ -25,6 +29,7 @@ public class UserController {
 	
 	
 	@PostMapping("/register")
+	@Operation(summary = "Crear un usuario", description = "Registra un nuevo usuario si no existe")
 	public ResponseEntity<?> registerUser(@RequestBody User user) {
 		 try {
 		        User nuevoUser = userService.registerUser(user);
@@ -36,11 +41,13 @@ public class UserController {
 		}
 	 
 	 @GetMapping("/{username}")
+	 @Operation(summary = "Obtener un usuario", description = "Obtiene un usuario por su username")
 	 public UserDto getUserByUsername(@PathVariable String username) {
 		 return userService.getUserByUsername(username) .orElseThrow(() -> new RuntimeException("Task not found"));
 	    }
     
     @PostMapping("/login")
+    @Operation(summary = "Loguear usuario", description = "Loguearse por usuario y contraseña")
     public String login(@RequestBody LoginRequest loginRequest) {
         boolean valid = userService.checkCredentials(loginRequest.getUsername(), loginRequest.getPassword());
 
@@ -52,17 +59,20 @@ public class UserController {
     }
     
     @GetMapping("/")
+    @Operation(summary = "Obtener todos los usuarios", description = "Devuelve una lista de usuarios sin contraseñas")
     public Iterable<UserDto> getAll(){
     	return userService.getUserAll();
     }
     
     @DeleteMapping("delete/{id}")
+    @Operation(summary = "Eliminar un usuario", description = "Elimina un usuario por su ID")
     public ResponseEntity<Void> deleteUser(@PathVariable long id) {
         userService.deleteUser(id);
         return ResponseEntity.noContent().build();
     }
     
     @PutMapping("/{id}")
+    @Operation(summary = "Actualizar un usuario", description = "Modifica los datos de un usuario existente")
     public ResponseEntity<?> updateUser(@PathVariable Long id, @RequestBody User user) {
         try {
             User updatedUser = userService.updateUser(id, user);
