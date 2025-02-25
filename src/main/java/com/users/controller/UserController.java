@@ -64,14 +64,14 @@ public class UserController {
     	return userService.getUserAll();
     }
     
-    @DeleteMapping("delete/{id}")
+    @DeleteMapping("/delete/{id}")
     @Operation(summary = "Eliminar un usuario", description = "Elimina un usuario por su ID")
     public ResponseEntity<Void> deleteUser(@PathVariable long id) {
         userService.deleteUser(id);
         return ResponseEntity.noContent().build();
     }
     
-    @PutMapping("/{id}")
+    @PutMapping("/modify/{id}")
     @Operation(summary = "Actualizar un usuario", description = "Modifica los datos de un usuario existente")
     public ResponseEntity<?> updateUser(@PathVariable Long id, @RequestBody User user) {
         try {
