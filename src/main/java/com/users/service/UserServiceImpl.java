@@ -35,7 +35,7 @@ public class UserServiceImpl implements UserService {
 		 return userRepository.findAll()
 	                .stream()
 	                .map(user -> new UserDto(user.getId(), user.getUsername(), user.getEmail()))
-	                .collect(Collectors.toList());
+	                .toList();
 	}
 
 	@Override
