@@ -48,14 +48,15 @@ public class UserController {
     
     @PostMapping("/login")
     @Operation(summary = "Loguear usuario", description = "Loguearse por usuario y contraseña")
-    public String login(@RequestBody LoginRequest loginRequest) {
+    public ResponseEntity<?> login(@RequestBody LoginRequest loginRequest) {
         boolean valid = userService.checkCredentials(loginRequest.getUsername(), loginRequest.getPassword());
 
         if (valid) {
-            return "Login successful!";
+            UserDto user = getUserByUsername(loginRequest.getUsername());
+            return ResponseEntity.ok(user);
         }
 
-        return "Invalid credentials!";
+        return ResponseEntity.status(401).body("Invalid credentials"); 
     }
     
     @GetMapping("/")
