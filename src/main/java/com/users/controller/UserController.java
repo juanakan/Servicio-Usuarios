@@ -1,6 +1,7 @@
 package com.users.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -32,6 +33,12 @@ public class UserController {
 	@Operation(summary = "Crear un usuario", description = "Registra un nuevo usuario si no existe")
 	public ResponseEntity<?> registerUser(@RequestBody User user) {
 		 try {
+			 if (userService.getUserByUsername(user.getUsername()).isPresent()) {
+		            return ResponseEntity.status(HttpStatus.CONFLICT).body("El usuario ya existe");
+		        }
+			 if(user.getId()==0) {
+				 user.setId(null);
+			 }
 		        User nuevoUser = userService.registerUser(user);
 		        UserDto userDTO = new UserDto(nuevoUser.getId(), nuevoUser.getUsername(), nuevoUser.getEmail());
 		        return ResponseEntity.ok(userDTO);
