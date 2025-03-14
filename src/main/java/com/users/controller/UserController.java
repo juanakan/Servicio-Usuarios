@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.users.dto.LoginRequest;
 import com.users.dto.UserDto;
+import com.users.dto.UserUpdateRequest;
 import com.users.model.User;
 import com.users.service.UserService;
 
@@ -81,10 +82,22 @@ public class UserController {
     
     @PutMapping("/modify/{id}")
     @Operation(summary = "Actualizar un usuario", description = "Modifica los datos de un usuario existente")
-    public ResponseEntity<?> updateUser(@PathVariable Long id, @RequestBody User user) {
+    public ResponseEntity<?> updateUser(@PathVariable Long id, @RequestBody UserUpdateRequest request) {
         try {
-            User updatedUser = userService.updateUser(id, user);
+            User existingUser = userService.findById(id)
+                    .orElseThrow(() -> new IllegalArgumentException("Usuario no encontrado"));
+
+
+            if (!userService.checkCredentials(existingUser.getUsername(), request.getCurrentPassword())) {
+                return ResponseEntity.status(401).body("Contraseña no válida");
+            }
+
+            existingUser.setPassword(request.getNewPassword());
+            existingUser.setEmail(request.getEmail());
+
+            User updatedUser = userService.updateUser(id, existingUser);
             UserDto userDTO = new UserDto(updatedUser.getId(), updatedUser.getUsername(), updatedUser.getEmail());
+
             return ResponseEntity.ok(userDTO);
         } catch (IllegalArgumentException e) {
             return ResponseEntity.badRequest().body(e.getMessage());

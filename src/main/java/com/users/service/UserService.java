@@ -19,4 +19,6 @@ public interface UserService {
 	
 	public User updateUser(Long id, User user);
 
+	public Optional<User> findById(Long id);
+
 }
